@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ratio — Patterns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --white:#ffffff;
+  --black:#0d0d0d;
+  --red:#d42b1e;
+  --red-dark:#a81e13;
+  --gray-100:#f5f5f3;
+  --gray-200:#e8e8e4;
+  --gray-300:#d0cfc9;
+  --gray-500:#8a8a84;
+  --gray-700:#3d3d3a;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+
+body{
+  background:var(--white);
+  color:var(--black);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.6;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--white);
+  border-bottom:1px solid var(--gray-200);
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+}
+.nav-logo-wrap{display:flex;align-items:baseline;gap:0;}
+.nav-logo{
+  font-family:var(--serif);
+  font-size:22px;font-weight:400;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--black);
+  text-decoration:none;
+}
+.nav-divider{
+  font-family:var(--mono);font-size:11px;color:var(--gray-300);
+  margin:0 12px;font-weight:300;
+}
+.nav-parent{
+  font-family:var(--mono);font-size:10px;font-weight:300;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--gray-500);
+}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--black);text-decoration:none;
+  transition:color 0.15s;
+}
+.nav-links a:hover{color:var(--red);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;margin-top:56px;
+  display:grid;grid-template-columns:1fr 1fr;
+  position:relative;overflow:hidden;
+}
+
+/* hex grid background — drawn with SVG inline */
+.hero-bg-hex{
+  position:absolute;top:0;right:0;
+  width:55%;height:100%;
+  pointer-events:none;z-index:0;
+  opacity:0.055;
+}
+
+.hero-left{
+  padding:100px 64px 80px 40px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:1;
+  border-right:1px solid var(--gray-200);
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gray-500);margin-bottom:36px;
+}
+.hero-headline{
+  font-family:var(--serif);
+  font-size:clamp(52px,5.5vw,82px);
+  font-weight:300;line-height:1.0;
+  letter-spacing:-0.01em;color:var(--black);
+  margin-bottom:36px;
+}
+.hero-headline em{font-style:italic;font-weight:300;}
+.hero-headline .red{color:var(--red);}
+.hero-body{
+  font-family:var(--sans);font-size:15px;font-weight:300;
+  line-height:1.75;color:var(--gray-700);
+  max-width:460px;margin-bottom:52px;
+}
+.hero-cta{display:flex;align-items:center;gap:28px;}
+.btn-primary{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--black);color:var(--white);
+  padding:13px 28px;text-decoration:none;
+  border:1px solid var(--black);
+  display:inline-block;transition:background 0.15s,color 0.15s;
+}
+.btn-primary:hover{background:var(--red);border-color:var(--red);}
+.btn-text{
+  font-family:var(--mono);font-size:10px;font-weight:300;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gray-500);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:color 0.15s;
+}
+.btn-text:hover{color:var(--black);}
+.btn-text::after{content:'→';font-family:var(--sans);font-size:14px;}
+
+.hero-right{
+  padding:100px 40px 80px 64px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:1;
+  background:var(--gray-100);
+}
+
+/* signal display */
+.signal-card{
+  background:var(--white);
+  border:1px solid var(--gray-200);
+  padding:28px 32px;
+  margin-bottom:24px;
+}
+.signal-card-header{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:24px;
+}
+.signal-card-title{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--gray-500);
+}
+.signal-card-id{
+  font-family:var(--mono);font-size:11px;font-weight:300;
+  color:var(--gray-700);
+}
+.signal-rows{}
+.sig-row{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:13px;
+}
+.sig-label{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--gray-500);width:90px;flex-shrink:0;
+}
+.sig-track{
+  flex:1;height:1px;background:var(--gray-200);position:relative;
+}
+.sig-fill{
+  position:absolute;top:0;left:0;height:100%;
+  background:var(--black);
+  transform:scaleX(0);transform-origin:left;
+  animation:fill-in 1.4s cubic-bezier(.4,0,.2,1) forwards;
+}
+.sig-fill.red-fill{background:var(--red);}
+.sig-val{
+  font-family:var(--mono);font-size:11px;font-weight:400;
+  color:var(--black);width:34px;text-align:right;flex-shrink:0;
+}
+.sig-val.red{color:var(--red);}
+@keyframes fill-in{to{transform:scaleX(1);}}
+
+.trigger-band{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 0 0;
+  border-top:1px solid var(--gray-200);
+  margin-top:4px;
+}
+.trigger-dot{
+  width:7px;height:7px;
+  background:var(--red);border-radius:50%;flex-shrink:0;
+  animation:blink 1.8s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.25;}}
+.trigger-text{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--red);
+}
+
+.equation-display{
+  background:var(--white);
+  border:1px solid var(--gray-200);
+  padding:24px 32px;
+}
+.eq-label{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gray-500);margin-bottom:14px;
+}
+.eq-formula{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  color:var(--black);line-height:1.55;
+}
+.eq-where{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  color:var(--gray-500);line-height:2.0;margin-top:12px;
+  letter-spacing:0.04em;
+}
+.eq-where span{color:var(--black);}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  border-top:1px solid var(--gray-200);
+  border-bottom:1px solid var(--gray-200);
+  overflow:hidden;height:38px;
+  display:flex;align-items:center;
+  background:var(--white);
+}
+.marquee-inner{
+  display:flex;white-space:nowrap;
+  animation:marquee 35s linear infinite;
+}
+.marquee-item{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gray-500);
+  padding:0 40px;border-right:1px solid var(--gray-200);
+  height:38px;display:flex;align-items:center;gap:12px;
+}
+.marquee-item b{color:var(--black);font-weight:400;}
+.marquee-item .r{color:var(--red);font-weight:400;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── TWO-COLUMN TEXT ── */
+.section-rule{
+  border:none;border-top:1px solid var(--gray-200);margin:0;
+}
+.two-col{
+  display:grid;grid-template-columns:280px 1fr;
+  border-bottom:1px solid var(--gray-200);
+}
+.two-col-left{
+  padding:72px 40px;
+  border-right:1px solid var(--gray-200);
+}
+.two-col-label{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gray-500);margin-bottom:40px;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+}
+.two-col-num{
+  font-family:var(--serif);font-size:60px;font-weight:300;
+  color:var(--gray-200);line-height:1;margin-top:auto;
+}
+.two-col-right{
+  padding:72px 64px 72px 72px;
+}
+.section-heading{
+  font-family:var(--serif);
+  font-size:clamp(32px,3.5vw,52px);
+  font-weight:300;line-height:1.1;color:var(--black);
+  margin-bottom:32px;letter-spacing:-0.01em;
+}
+.section-heading em{font-style:italic;}
+.section-body{
+  font-family:var(--sans);font-size:15px;font-weight:300;
+  line-height:1.8;color:var(--gray-700);max-width:660px;
+  columns:2;column-gap:56px;
+}
+
+/* ── THREE PANELS ── */
+.three-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-bottom:1px solid var(--gray-200);
+}
+.panel{
+  padding:60px 40px;
+  border-right:1px solid var(--gray-200);
+  position:relative;
+}
+.panel:last-child{border-right:none;}
+.panel-num{
+  font-family:var(--serif);font-size:80px;font-weight:300;
+  line-height:1;color:var(--gray-200);
+  margin-bottom:20px;letter-spacing:-0.02em;
+}
+.panel-title{
+  font-family:var(--serif);font-size:24px;font-weight:400;
+  color:var(--black);margin-bottom:14px;line-height:1.2;
+}
+.panel-body{
+  font-family:var(--sans);font-size:13px;font-weight:300;
+  line-height:1.75;color:var(--gray-700);margin-bottom:32px;
+}
+.panel-stat{
+  border-top:1px solid var(--gray-200);padding-top:20px;
+}
+.panel-stat-val{
+  font-family:var(--serif);font-size:32px;font-weight:400;
+  color:var(--black);line-height:1;margin-bottom:4px;
+}
+.panel-stat-label{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-500);
+  line-height:1.6;
+}
+
+/* red accent bar on hover */
+.panel::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:2px;background:var(--red);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s ease;
+}
+.panel:hover::after{transform:scaleX(1);}
+
+/* ── MATH / FORMULA ── */
+.math-section{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--gray-200);
+}
+.math-left{
+  padding:80px 64px 80px 40px;
+  border-right:1px solid var(--gray-200);
+}
+.math-right{
+  padding:80px 40px 80px 64px;
+  background:var(--gray-100);
+}
+.formula-block{margin-bottom:40px;}
+.formula-label{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gray-500);margin-bottom:12px;
+}
+.formula-box{
+  border:1px solid var(--gray-200);
+  padding:20px 24px;background:var(--white);
+  margin-bottom:10px;
+}
+.formula-text{
+  font-family:var(--serif);font-size:20px;font-weight:400;
+  color:var(--black);line-height:1.6;
+}
+.formula-notes{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  color:var(--gray-500);line-height:2.0;letter-spacing:0.04em;
+}
+.formula-notes span{color:var(--black);}
+
+/* vs table */
+.vs-table{width:100%;border-collapse:collapse;margin-top:20px;}
+.vs-table th{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.14em;text-transform:uppercase;
+  padding:10px 16px;border-bottom:1px solid var(--gray-200);
+  text-align:left;background:var(--white);
+}
+.vs-table th.red-head{color:var(--red);}
+.vs-table th.gray-head{color:var(--gray-500);}
+.vs-table td{
+  font-family:var(--sans);font-size:12px;font-weight:300;
+  color:var(--gray-700);padding:10px 16px;
+  border-bottom:1px solid var(--gray-200);
+  vertical-align:top;
+}
+.vs-table td.hl{color:var(--black);font-weight:400;}
+.vs-table td .chk{color:var(--red);margin-right:6px;}
+.vs-table td .x{color:var(--gray-300);margin-right:6px;}
+
+/* ── COST TABLE ── */
+.cost-section{border-bottom:1px solid var(--gray-200);}
+.cost-header{
+  padding:48px 40px 32px;
+  border-bottom:1px solid var(--gray-200);
+  display:flex;align-items:baseline;gap:20px;
+}
+.cost-header h2{
+  font-family:var(--serif);font-size:32px;font-weight:400;color:var(--black);
+}
+.cost-header span{
+  font-family:var(--mono);font-size:10px;font-weight:300;
+  letter-spacing:0.1em;color:var(--gray-500);
+  text-transform:uppercase;
+}
+.cost-table{width:100%;border-collapse:collapse;}
+.cost-table th{
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gray-500);padding:14px 28px;
+  border-bottom:1px solid var(--gray-200);
+  border-right:1px solid var(--gray-200);
+  text-align:left;background:var(--gray-100);
+}
+.cost-table th:first-child{padding-left:40px;}
+.cost-table th:last-child{border-right:none;}
+.cost-table td{
+  font-family:var(--sans);font-size:13px;font-weight:300;
+  color:var(--gray-700);padding:18px 28px;
+  border-bottom:1px solid var(--gray-200);
+  border-right:1px solid var(--gray-200);
+  vertical-align:middle;transition:background 0.12s;
+}
+.cost-table td:first-child{
+  padding-left:40px;font-family:var(--serif);font-size:16px;
+  font-weight:400;color:var(--black);
+}
+.cost-table td:last-child{border-right:none;}
+.cost-table tr:hover td{background:var(--gray-100);}
+.cost-table td.ratio{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  color:var(--red);
+}
+.cost-table td.mono{font-family:var(--mono);font-size:11px;color:var(--black);}
+
+/* ── STAT STRIP ── */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--gray-200);
+}
+.stat-cell{
+  padding:48px 40px;
+  border-right:1px solid var(--gray-200);
+}
+.stat-cell:last-child{border-right:none;}
+.stat-val{
+  font-family:var(--serif);font-size:52px;font-weight:300;
+  color:var(--black);line-height:1;margin-bottom:8px;
+  letter-spacing:-0.01em;
+}
+.stat-label{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gray-500);line-height:1.6;
+}
+
+/* ── CTA BAND ── */
+.cta-band{
+  padding:80px 40px;
+  border-bottom:1px solid var(--gray-200);
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:40px;
+}
+.cta-band h2{
+  font-family:var(--serif);
+  font-size:clamp(28px,3vw,46px);
+  font-weight:300;color:var(--black);line-height:1.15;
+}
+.cta-band h2 em{font-style:italic;}
+
+/* ── FOOTER ── */
+footer{
+  padding:32px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--gray-200);
+}
+.footer-left{display:flex;align-items:baseline;gap:16px;}
+.footer-name{
+  font-family:var(--serif);font-size:16px;font-weight:400;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--black);
+}
+.footer-by{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-500);
+}
+.footer-right{
+  font-family:var(--mono);font-size:9px;font-weight:300;
+  letter-spacing:0.08em;color:var(--gray-500);
+}
+
+/* ── SCROLL REVEALS ── */
+.reveal{
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.65s ease,transform 0.65s ease;
+}
+.reveal.on{opacity:1;transform:translateY(0);}
+.reveal-stagger>*{
+  opacity:0;transform:translateY(14px);
+  transition:opacity 0.5s ease,transform 0.5s ease;
+}
+.reveal-stagger.on>*:nth-child(1){opacity:1;transform:none;transition-delay:0ms;}
+.reveal-stagger.on>*:nth-child(2){opacity:1;transform:none;transition-delay:90ms;}
+.reveal-stagger.on>*:nth-child(3){opacity:1;transform:none;transition-delay:180ms;}
+.reveal-stagger.on>*:nth-child(4){opacity:1;transform:none;transition-delay:270ms;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo-wrap">
+    <a href="#" class="nav-logo">Ratio</a>
+    <span class="nav-divider">·</span>
+    <span class="nav-parent">by Patterns</span>
+  </div>
+  <nav class="nav-links">
+    <a href="#">Who We Are</a>
+    <a href="#">What We Do</a>
+    <a href="#">Mathematics</a>
+    <a href="#">Contact</a>
+  </nav>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- hex grid decoration (right panel bg) -->
+  <svg class="hero-bg-hex" viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id="hexpat" x="0" y="0" width="80" height="92.4" patternUnits="userSpaceOnUse">
+        <polygon points="40,0 80,23.1 80,69.3 40,92.4 0,69.3 0,23.1" fill="none" stroke="#0d0d0d" stroke-width="0.8"/>
+        <polygon points="40,46.2 80,69.3 80,115.5 40,138.6 0,115.5 0,69.3" fill="none" stroke="#0d0d0d" stroke-width="0.8" transform="translate(40,0)"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hexpat)"/>
+  </svg>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">Intervention Timing Engine</div>
+
+    <h1 class="hero-headline">
+      Solving the<br>
+      timing problem<br>
+      in retail <em>credit.</em>
+    </h1>
+
+    <p class="hero-body">
+      Ratio is a decision engine built on optimal stopping theory. It sits above your existing Early Warning System and tells you not <em>who</em> is at risk, but <em>when</em> to act — calibrated to the rupee value of waiting one more month.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#" class="btn-primary">Request PoC</a>
+      <a href="#" class="btn-text">Read the mathematics</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="signal-card">
+      <div class="signal-card-header">
+        <span class="signal-card-title">Live stress signal</span>
+        <span class="signal-card-id">Account ****4521 &nbsp;·&nbsp; ₹5L personal loan</span>
+      </div>
+      <div class="signal-rows">
+        <div class="sig-row">
+          <span class="sig-label">EMI stress</span>
+          <div class="sig-track"><div class="sig-fill" style="width:71%;animation-delay:0.3s"></div></div>
+          <span class="sig-val">0.71</span>
+        </div>
+        <div class="sig-row">
+          <span class="sig-label">Balance floor</span>
+          <div class="sig-track"><div class="sig-fill" style="width:58%;animation-delay:0.5s"></div></div>
+          <span class="sig-val">0.58</span>
+        </div>
+        <div class="sig-row">
+          <span class="sig-label">App dropout</span>
+          <div class="sig-track"><div class="sig-fill" style="width:44%;animation-delay:0.7s"></div></div>
+          <span class="sig-val">0.44</span>
+        </div>
+        <div class="sig-row" style="margin-top:4px;margin-bottom:0;">
+          <span class="sig-label" style="color:var(--black);font-weight:400;">s(t) composite</span>
+          <div class="sig-track" style="background:var(--gray-200);">
+            <div class="sig-fill red-fill" style="width:63%;animation-delay:0.9s"></div>
+          </div>
+          <span class="sig-val red">0.63</span>
+        </div>
+      </div>
+      <div class="trigger-band">
+        <div class="trigger-dot"></div>
+        <span class="trigger-text">s(t) 0.63 exceeds boundary s*(t) 0.41 — intervene now — ₹75,000 at stake</span>
+      </div>
+    </div>
+
+    <div class="equation-display">
+      <div class="eq-label">Stopping boundary</div>
+      <div class="eq-formula">s*(t) = s<sub>max</sub> · (1 − t/T) · f(r)</div>
+      <div class="eq-where">
+        r &nbsp;= C<sub>late</sub> / C<sub>early</sub> &nbsp;—&nbsp; <span>cost ratio, calibrated per loan type</span><br>
+        f(r) = 1 − 1/√n &nbsp;—&nbsp; <span>derived from Wald's sequential test</span><br>
+        T &nbsp;= remaining tenure &nbsp;—&nbsp; <span>boundary shrinks toward maturity</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <div class="marquee-item">Decision engine <b>not a score</b></div>
+    <div class="marquee-item">Accounts flagged ≥45d early <b class="r">81.6%</b></div>
+    <div class="marquee-item">Personal loan r = <b>300</b></div>
+    <div class="marquee-item">Home loan r = <b>375</b></div>
+    <div class="marquee-item">PMJDY savings r = <b>5,000+</b></div>
+    <div class="marquee-item">Monthly provisioning recoverable <b class="r">₹15 Cr</b></div>
+    <div class="marquee-item">Backtest AUC <b>0.73</b> vs EWS <b>0.51</b></div>
+    <div class="marquee-item">Logistic regression · fully auditable</div>
+    <div class="marquee-item">SMA-0 → SMA-1 transitions / mo <b>25K–40K</b></div>
+    <div class="marquee-item">On-premise · no data leaves the bank</div>
+    <!-- duplicate -->
+    <div class="marquee-item">Decision engine <b>not a score</b></div>
+    <div class="marquee-item">Accounts flagged ≥45d early <b class="r">81.6%</b></div>
+    <div class="marquee-item">Personal loan r = <b>300</b></div>
+    <div class="marquee-item">Home loan r = <b>375</b></div>
+    <div class="marquee-item">PMJDY savings r = <b>5,000+</b></div>
+    <div class="marquee-item">Monthly provisioning recoverable <b class="r">₹15 Cr</b></div>
+    <div class="marquee-item">Backtest AUC <b>0.73</b> vs EWS <b>0.51</b></div>
+    <div class="marquee-item">Logistic regression · fully auditable</div>
+    <div class="marquee-item">SMA-0 → SMA-1 transitions / mo <b>25K–40K</b></div>
+    <div class="marquee-item">On-premise · no data leaves the bank</div>
+  </div>
+</div>
+
+<!-- STATEMENT -->
+<div class="two-col reveal">
+  <div class="two-col-left">
+    <div class="two-col-label">Problem</div>
+    <div class="two-col-num">01</div>
+  </div>
+  <div class="two-col-right">
+    <h2 class="section-heading">Every system produces a score.<br><em>Ratio produces a decision.</em></h2>
+    <div class="section-body">
+      <p>
+        The cost ratio r&nbsp;=&nbsp;C<sub>late</sub>/C<sub>early</sub> was never made explicit per loan type, making threshold calibration arbitrary. Existing Early Warning Systems were built by score-only thinking — answering "is this customer risky?" rather than "is now the right time to act?"
+      </p>
+      <p>
+        Ratio's underpinning is the Optimal Stopping Problem — the same family of mathematics that powers sequential hypothesis testing, clinical trial stopping rules, and optimal asset liquidation. Applied to retail banking, it produces a time-varying boundary that calibrates urgency automatically by loan economics.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- THREE PANELS -->
+<section class="three-grid reveal-stagger">
+  <div class="panel">
+    <div class="panel-num">01</div>
+    <h3 class="panel-title">Pre-NPA Slippage</h3>
+    <p class="panel-body">A retail loan crosses SMA-0 → SMA-1 → NPA. The moment it becomes NPA, interest recognition stops and mandatory provisioning begins — 15% for substandard, up to 100% for loss assets. On a ₹5L personal loan: ₹75,000 in provisioning and ₹18,000 in lost annual interest.</p>
+    <div class="panel-stat">
+      <div class="panel-stat-val">₹15 Cr</div>
+      <div class="panel-stat-label">recoverable per month<br>10k accounts · 20% engagement recovery</div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-num">02</div>
+    <h3 class="panel-title">Dormant Account Cost</h3>
+    <p class="panel-body">RBI's December 2024 directive mandates urgent reduction of inoperative accounts. Every PMJDY account dormant for 2+ years creates compliance review overhead, quarterly RBI reporting, and risks DEA Fund transfer — a direct balance sheet debit.</p>
+    <div class="panel-stat">
+      <div class="panel-stat-val">₹0.10</div>
+      <div class="panel-stat-label">cost of one SMS intervention<br>vs. regulatory friction + transfer</div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-num">03</div>
+    <h3 class="panel-title">Life Event Revenue Miss</h3>
+    <p class="panel-body">A customer accumulates savings for 14 months, reduces discretionary spend, and searches home loan rates on YONO. All signals were present. The customer takes the loan elsewhere. This is not a retention failure — it is a signal-recognition failure.</p>
+    <div class="panel-stat">
+      <div class="panel-stat-val">330M+</div>
+      <div class="panel-stat-label">YONO users with transactional,<br>behavioural and search signals</div>
+    </div>
+  </div>
+</section>
+
+<!-- MATH -->
+<section class="math-section">
+  <div class="math-left reveal">
+    <div style="font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:var(--gray-500);margin-bottom:28px;">02 — The Framework</div>
+    <h2 class="section-heading" style="margin-bottom:28px;">Optimal stopping,<br><em>not classification.</em></h2>
+    <p style="font-family:var(--sans);font-size:14px;font-weight:300;line-height:1.8;color:var(--gray-700);margin-bottom:40px;max-width:480px;">
+      Ratio does not replace your EWS. It converts scores into timed, costed, prioritised action lists. The stopping boundary shrinks as remaining loan tenure decreases, encoding the increasing urgency of intervention as the account approaches maturity. When C<sub>late</sub> ≫ C<sub>early</sub>, the boundary drops — you intervene at the first whisper of stress.
+    </p>
+    <table class="vs-table">
+      <thead>
+        <tr>
+          <th class="gray-head" style="width:50%;">Existing EWS</th>
+          <th class="red-head" style="width:50%;">Ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="x">—</span>"Is this customer risky?"</td>
+          <td class="hl"><span class="chk">✓</span>"Is now the right time to act?"</td>
+        </tr>
+        <tr>
+          <td><span class="x">—</span>Static, manual threshold</td>
+          <td class="hl"><span class="chk">✓</span>Dynamic, cost-derived boundary</td>
+        </tr>
+        <tr>
+          <td><span class="x">—</span>Same threshold for ₹2L and ₹50L</td>
+          <td class="hl"><span class="chk">✓</span>Fully calibrated by loan economics</td>
+        </tr>
+        <tr>
+          <td><span class="x">—</span>False positive cost not modelled</td>
+          <td class="hl"><span class="chk">✓</span>Explicitly in the boundary formula</td>
+        </tr>
+        <tr>
+          <td><span class="x">—</span>Often opaque ML</td>
+          <td class="hl"><span class="chk">✓</span>Interpretable logistic regression</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="math-right reveal">
+    <div class="formula-block">
+      <div class="formula-label">Composite stress signal</div>
+      <div class="formula-box">
+        <div class="formula-text">s(t) = w₁·e(t) + w₂·(−∇b(t)) + w₃·d(t)</div>
+      </div>
+      <div class="formula-notes">
+        e(t) &nbsp;&nbsp;— <span>EMI outflow / avg monthly credit</span><br>
+        b(t) &nbsp;&nbsp;— <span>6-month slope of minimum balance</span><br>
+        d(t) &nbsp;&nbsp;— <span>decline in YONO usage vs 3-month avg</span><br>
+        w₁,w₂,w₃ — <span>logistic regression on SMA transitions</span>
+      </div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-label">Time-varying stopping boundary</div>
+      <div class="formula-box">
+        <div class="formula-text">s*(t) = s<sub>max</sub> · (1 − t/T) · (1 − 1/√n)</div>
+      </div>
+      <div class="formula-notes">
+        T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— <span>remaining tenure (months)</span><br>
+        n &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— <span>sequential observations to date</span><br>
+        r &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— <span>C<sub>late</sub>/C<sub>early</sub>, calibrated per loan type</span>
+      </div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-label">Intervention ranking</div>
+      <div class="formula-box">
+        <div class="formula-text">rank = Δ · C<sub>late</sub> · w<sub>channel</sub></div>
+      </div>
+      <div class="formula-notes">
+        Δ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;— <span>s(t) − s*(t), the urgency delta</span><br>
+        C<sub>late</sub> &nbsp;&nbsp;&nbsp;&nbsp;— <span>provisioning at stake in ₹</span><br>
+        w<sub>channel</sub> — <span>channel availability weight</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COST TABLE -->
+<section class="cost-section reveal">
+  <div class="cost-header">
+    <h2>Cost Ratios by Loan Type</h2>
+    <span>r = C<sub>late</sub> / C<sub>early</sub> · calibrated to actual provisioning economics</span>
+  </div>
+  <table class="cost-table">
+    <thead>
+      <tr>
+        <th>Loan type</th>
+        <th>C<sub>late</sub> — provisioning + lost interest</th>
+        <th>C<sub>early</sub> — intervention cost</th>
+        <th>r</th>
+        <th>Boundary behaviour</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>₹2L Personal loan</td>
+        <td class="mono">₹45,000</td>
+        <td class="mono">₹150 &nbsp;(agent call)</td>
+        <td class="ratio">300</td>
+        <td>Intervene early — high sensitivity</td>
+      </tr>
+      <tr>
+        <td>₹50L Home loan</td>
+        <td class="mono">₹7,50,000</td>
+        <td class="mono">₹2,000 &nbsp;(RM visit)</td>
+        <td class="ratio">375</td>
+        <td>Very low boundary — first whisper triggers</td>
+      </tr>
+      <tr>
+        <td>PMJDY Savings account</td>
+        <td class="mono">DEA Fund + compliance</td>
+        <td class="mono">₹0.10 &nbsp;(SMS)</td>
+        <td class="ratio">5,000+</td>
+        <td>Minimum viable signal sufficient</td>
+      </tr>
+      <tr>
+        <td>₹10L Gold loan</td>
+        <td class="mono">₹1,50,000</td>
+        <td class="mono">₹500 &nbsp;(branch contact)</td>
+        <td class="ratio">300</td>
+        <td>Intervene early — high sensitivity</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- STATS STRIP -->
+<section class="stats-strip reveal-stagger">
+  <div class="stat-cell">
+    <div class="stat-val">81.6%</div>
+    <div class="stat-label">accounts flagged<br>≥45 days before NPA</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val">+31.7<span style="font-size:30px;">pp</span></div>
+    <div class="stat-label">improvement over<br>existing EWS precision</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val">₹15 Cr</div>
+    <div class="stat-label">monthly provisioning<br>recoverable (conservative)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-val">200</div>
+    <div class="stat-label">accounts to cover<br>full system cost</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band reveal">
+  <h2>Ratio is seeking its first PoC partner.<br><em>On-premise. No data leaves your network.</em></h2>
+  <a href="#" class="btn-primary" style="white-space:nowrap;">Get in touch →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-name">Ratio</span>
+    <span style="color:var(--gray-300);font-size:12px;">·</span>
+    <span class="footer-by">by Patterns</span>
+    <span style="color:var(--gray-300);font-size:12px;">·</span>
+    <span class="footer-by">Intervention timing engine for retail banking</span>
+  </div>
+  <div class="footer-right">© 2026 Patterns. Confidential — pre-filing.</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
